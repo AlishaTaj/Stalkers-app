@@ -112,7 +112,7 @@ def main():
     st.image("https://images.squarespace-cdn.com/content/v1/6080580223973b4656f2d4b0/9490c5fd-c8d8-4742-b9b1-7235e09f9778/SocialMedia.png", use_column_width=True)
 
     # Sidebar inputs
-    profile_id = st.sidebar.text_input('Enter Instagram Profile ID')
+    profile_id = st.sidebar.text_input('Enter Instagram Profile ID in both the Fields')
     profile_type = st.sidebar.radio('Profile Type', ['Public', 'Private'])
     is_private = (profile_type == 'Private')
     login = st.sidebar.text_input('Enter Username')
