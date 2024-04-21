@@ -8,9 +8,14 @@ import requests
 from io import BytesIO
 
 # Function to get captions from a public profile
-def getPublicProfileCaptions(profile_id):
+def getPublicProfileCaptions(profile_id, login, password):
     loader = instaloader.Instaloader()
     
+    try:
+        loader.login(login, password)
+    except:
+        return "Failed to login!", "Empty", "Empty", []
+
     profile = Profile.from_username(loader.context, profile_id)
     profile_pic = profile.get_profile_pic_url()
     full_name = profile.full_name
@@ -110,13 +115,8 @@ def main():
     profile_id = st.sidebar.text_input('Enter Instagram Profile ID')
     profile_type = st.sidebar.radio('Profile Type', ['Public', 'Private'])
     is_private = (profile_type == 'Private')
-    
-    if is_private:
-        login = st.sidebar.text_input('Enter Username')
-        password = st.sidebar.text_input('Enter Password', type='password')
-    else:
-        login = None
-        password = None
+    login = st.sidebar.text_input('Enter Username')
+    password = st.sidebar.text_input('Enter Password', type='password')
 
     # Perform analysis
     if st.sidebar.button('Analyze'):
@@ -124,7 +124,7 @@ def main():
             if is_private:
                 captions_or_comments, profile_pic, full_name, posts_data = getPrivateProfileData(profile_id, login, password)
             else:
-                captions_or_comments, profile_pic, full_name, posts_data = getPublicProfileCaptions(profile_id)
+                captions_or_comments, profile_pic, full_name, posts_data = getPublicProfileCaptions(profile_id, login, password)
             
             if captions_or_comments == "Failed to login!":
                 st.error("Failed to login! Please check your credentials.")
